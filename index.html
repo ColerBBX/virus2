@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifica</title>
+  <style>
+    /* Generale */
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #00ff00;
+    }
+    
+    /* Sfondo stile Matrix */
+    .matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: black;
+      overflow: hidden;
+    }
+
+    .matrix span {
+      position: absolute;
+      font-size: 20px;
+      color: #00ff00;
+      animation: fall linear infinite;
+      opacity: 0.8;
+      text-shadow: 0 0 5px #00ff00;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100%);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+    }
+
+    /* Testo Glitch */
+    .glitch {
+      font-size: 3em;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 0.05em 0 red, -0.05em 0 cyan;
+      animation: glitch 1s infinite;
+    }
+
+    @keyframes glitch {
+      0% {
+        text-shadow: 0.05em 0 red, -0.05em 0 cyan;
+      }
+      20% {
+        text-shadow: 0.05em 0 cyan, -0.05em 0 red;
+        transform: translateX(0.05em);
+      }
+      40% {
+        text-shadow: -0.05em 0 red, 0.05em 0 cyan;
+        transform: translateX(-0.05em);
+      }
+      60% {
+        text-shadow: -0.05em 0 cyan, 0.05em 0 red;
+        transform: translateX(0.05em);
+      }
+      80% {
+        text-shadow: 0.05em 0 red, -0.05em 0 cyan;
+      }
+      100% {
+        text-shadow: -0.05em 0 cyan, 0.05em 0 red;
+        transform: translateX(0);
+      }
+    }
+
+    /* Notifica con effetto zoom */
+    #notification {
+      background-color: #f8f9fa;
+      color: #212529;
+      font-size: 1.2em;
+      font-weight: bold;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      display: none;
+      transform: scale(0);
+      opacity: 0;
+      animation: zoomInFade 1.5s ease forwards;
+    }
+
+    @keyframes zoomInFade {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Overlay per simulare il blocco */
+    #block-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      color: #00ff00;
+      font-size: 1.5em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="matrix" id="matrix"></div>
+
+  <div id="text-container">
+    <div id="virus" class="glitch">Virus Injected</div>
+    <div id="notification">
+      Banca Intesa San Paolo<br>
+      Bonifico effettuato a favore di <strong>Holy_Coler</strong><br>
+      <strong>Importo: 1.000.000 €</strong><br>
+      Oggi, 13:23
+    </div>
+    <div id="hacked" class="glitch" style="display: none;">Hacked By Coler</div>
+  </div>
+
+  <!-- Overlay per simulare il blocco -->
+  <div id="block-screen">
+    Attendere prego...<br>Il sistema è temporaneamente bloccato.
+  </div>
+
+  <script>
+    // Generazione dello sfondo Matrix
+    const matrixDiv = document.getElementById('matrix');
+    for (let i = 0; i < 200; i++) {
+      const span = document.createElement('span');
+      span.style.left = Math.random() * 100 + 'vw';
+      span.style.animationDuration = Math.random() * 3 + 3 + 's';
+      span.textContent = Math.floor(Math.random() * 2);
+      matrixDiv.appendChild(span);
+    }
+
+    // Sequenza delle scritte
+    const virusText = document.getElementById('virus');
+    const notificationDiv = document.getElementById('notification');
+    const hackedText = document.getElementById('hacked');
+    const blockScreen = document.getElementById('block-screen');
+
+    // Mostra l'overlay di blocco subito
+    blockScreen.style.display = 'flex';
+
+    setTimeout(() => {
+      virusText.style.display = 'none';
+      notificationDiv.style.display = 'block';
+      notificationDiv.style.animation = 'zoomInFade 1.5s ease forwards'; // Applica l'animazione
+    }, 10000); // Dopo 10 secondi, mostra la notifica bancaria
+
+    setTimeout(() => {
+      notificationDiv.style.display = 'none';
+      hackedText.style.display = 'block';
+    }, 15000); // Dopo 15 secondi, mostra "Hacked By Coler"
+
+    setTimeout(() => {
+      blockScreen.style.display = 'none'; // Rimuove il blocco dopo 7 secondi
+    }, 7000);
+  </script>
+</body>
+</html>
